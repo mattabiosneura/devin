@@ -1,0 +1,16 @@
+#%RAML 1.0
+title: Sample API
+version: v1
+baseUri: /sampleapi
+
+uses:
+  DataTypes: libraries/data-types.raml
+  Traits: libraries/traits.raml
+
+/createUser:
+  post:
+    description: Create a new user
+    is: [Traits.jsonBody, Traits.standardResponse]
+    body:
+      application/json:
+        type: DataTypes.UserRequest

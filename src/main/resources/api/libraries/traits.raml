@@ -1,0 +1,41 @@
+#%RAML 1.0 Library
+
+uses:
+  DataTypes: data-types.raml
+
+traits:
+  standardResponse:
+    responses:
+      200:
+        description: Success response
+        body:
+          application/json:
+            type: DataTypes.SuccessResponse
+      400:
+        description: Bad Request
+        body:
+          application/json:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 400
+              response:
+                type: string
+                example: "Bad Request"
+      500:
+        description: Internal Server Error
+        body:
+          application/json:
+            type: object
+            properties:
+              code:
+                type: integer
+                example: 500
+              response:
+                type: string
+                example: "Internal Server Error"
+  
+  jsonBody:
+    body:
+      application/json:

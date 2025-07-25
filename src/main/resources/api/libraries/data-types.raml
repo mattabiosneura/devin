@@ -1,0 +1,30 @@
+#%RAML 1.0 Library
+
+types:
+  UserRequest:
+    type: object
+    properties:
+      "First Name":
+        type: string
+        example: "Matthew"
+        required: true
+      "Last Name":
+        type: string
+        example: "Tabios"
+        required: true
+    example:
+      "First Name": "Matthew"
+      "Last Name": "Tabios"
+  
+  SuccessResponse:
+    type: object
+    properties:
+      code:
+        type: integer
+        example: 200
+      response:
+        type: string
+        example: "Successfull Create"
+    example:
+      code: 200
+      response: "Successfull Create"
