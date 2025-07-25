@@ -100,6 +100,10 @@ output application/json
     </flow>
 
     <flow name="post:\createUser:sampleapi-config">
+        <flow-ref doc:name="Call createUser subflow" name="createUser-subflow"/>
+    </flow>
+
+    <sub-flow name="createUser-subflow">
         <ee:transform xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
@@ -111,6 +115,6 @@ output application/json
 }]]></ee:set-payload>
             </ee:message>
         </ee:transform>
-    </flow>
+    </sub-flow>
 
 </mule>
