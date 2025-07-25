@@ -103,5 +103,9 @@ output application/json
         <flow-ref doc:name="Call createUser subflow" name="createUser-subflow"/>
     </flow>
 
+    <flow name="post:\product:sampleapi-config">
+        <flow-ref doc:name="Call product subflow" name="product-subflow"/>
+    </flow>
+
 
 </mule>

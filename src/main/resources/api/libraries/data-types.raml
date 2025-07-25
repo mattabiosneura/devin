@@ -28,3 +28,27 @@ types:
     example:
       code: 200
       response: "Successfull Create"
+  
+  ProductRequest:
+    type: object
+    properties:
+      amount:
+        type: number
+        example: 500
+        required: true
+      quantity:
+        type: number
+        example: 5
+        required: true
+    example:
+      amount: 500
+      quantity: 5
+  
+  ProductResponse:
+    type: object
+    properties:
+      value:
+        type: number
+        example: 2500
+    example:
+      value: 2500

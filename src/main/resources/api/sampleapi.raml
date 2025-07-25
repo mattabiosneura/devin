@@ -14,3 +14,16 @@ uses:
     body:
       application/json:
         type: DataTypes.UserRequest
+
+/product:
+  post:
+    description: Calculate product value
+    is: [Traits.jsonBody, Traits.standardResponse]
+    body:
+      application/json:
+        type: DataTypes.ProductRequest
+    responses:
+      200:
+        body:
+          application/json:
+            type: DataTypes.ProductResponse
