@@ -27,3 +27,16 @@ uses:
         body:
           application/json:
             type: DataTypes.ProductResponse
+
+/complexProduct:
+  post:
+    description: Calculate complex product with conditional logic
+    is: [Traits.jsonBody, Traits.standardResponse]
+    body:
+      application/json:
+        type: DataTypes.ComplexProductRequest
+    responses:
+      200:
+        body:
+          application/json:
+            type: DataTypes.ComplexProductResponse

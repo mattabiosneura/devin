@@ -52,3 +52,45 @@ types:
         example: 2500
     example:
       value: 2500
+  
+  ComplexProductRequest:
+    type: object
+    properties:
+      amount:
+        type: number
+        example: 200
+        required: true
+      quantity:
+        type: number
+        example: 2
+        required: true
+      type:
+        type: string
+        example: "toy"
+        required: true
+      material:
+        type: string
+        example: "plastic"
+        required: true
+    example:
+      amount: 200
+      quantity: 2
+      type: "toy"
+      material: "plastic"
+  
+  ComplexProductResponse:
+    type: object
+    properties:
+      value:
+        type: number
+        example: 400
+      kind:
+        type: string
+        example: "plastic toy"
+      "For Kids":
+        type: boolean
+        example: true
+    example:
+      value: 400
+      kind: "plastic toy"
+      "For Kids": true

@@ -107,5 +107,9 @@ output application/json
         <flow-ref doc:name="Call product subflow" name="product-subflow"/>
     </flow>
 
+    <flow name="post:\complexProduct:sampleapi-config">
+        <flow-ref doc:name="Call complexProduct subflow" name="complexProduct-subflow"/>
+    </flow>
+
 
 </mule>
