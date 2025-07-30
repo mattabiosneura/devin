@@ -1,0 +1,59 @@
+#%RAML 1.0 Library
+
+types:
+  KycRequest:
+    type: object
+    properties:
+      account:
+        type: string
+        example: "019231203"
+        required: true
+        description: Account number
+      "First Name":
+        type: string
+        example: "Katie"
+        required: true
+        description: Customer first name
+      "Last Name":
+        type: string
+        example: "Hunter"
+        required: true
+        description: Customer last name
+      amount:
+        type: number
+        format: double
+        example: 100.00
+        required: true
+        description: Transaction amount
+      currency:
+        type: string
+        example: "PHP"
+        required: true
+        description: Currency code
+      Birthday:
+        type: string
+        example: "10-30-1992"
+        required: true
+        description: Date of birth in MM-DD-YYYY format
+    example:
+      account: "019231203"
+      "First Name": "Katie"
+      "Last Name": "Hunter"
+      amount: 100.00
+      currency: "PHP"
+      Birthday: "10-30-1992"
+
+  KycResponse:
+    type: object
+    properties:
+      "response code":
+        type: integer
+        example: 200
+        description: HTTP response code
+      "response message":
+        type: string
+        example: "Successful kyc"
+        description: Response message
+    example:
+      "response code": 200
+      "response message": "Successful kyc"

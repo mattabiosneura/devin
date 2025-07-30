@@ -1,0 +1,36 @@
+#%RAML 1.0 Library
+
+traits:
+  standardResponse:
+    responses:
+      200:
+        description: Success
+      400:
+        description: Bad Request
+        body:
+          application/json:
+            example:
+              message: "Bad request"
+      404:
+        description: Not Found
+        body:
+          application/json:
+            example:
+              message: "Resource not found"
+      500:
+        description: Internal Server Error
+        body:
+          application/json:
+            example:
+              message: "Internal server error"
+
+  jsonBody:
+    body:
+      application/json:
+
+  systemHeaders:
+    headers:
+      X-System-ID:
+        type: string
+        required: false
+        description: System identifier for data access tracking
