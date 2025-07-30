@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mule xmlns="http://www.mulesoft.org/schema/mule/core"
+      xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+      xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+                          http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+
+    <sub-flow name="process-kyc-subflow" doc:id="process-kyc-subflow">
+        <logger level="INFO" doc:name="Log KYC Request" message="Process API: Processing KYC request for account: #[payload.account]"/>
+        <ee:transform doc:name="Validate Business Rules">
+            <ee:message>
+                <ee:set-payload><![CDATA[%dw 2.0
+output application/json
+var birthYear = payload.Birthday splitBy "-" then $[2] as Number
+var currentYear = now() as String {format: "yyyy"} as Number
+var age = currentYear - birthYear
+var isValidAge = age >= 18
+var isValidCurrency = payload.currency == "PHP" or payload.currency == "USD" or payload.currency == "EUR"
+var isValidAmount = payload.amount > 0
+---
+if (isValidAge and isValidCurrency and isValidAmount)
+  {
+    "response code": 200,
+    "response message": "Successful kyc"
+  }
+else
+  {
+    "response code": 422,
+    "response message": "Business validation failed"
+  }]]></ee:set-payload>
+            </ee:message>
+        </ee:transform>
+        <logger level="INFO" doc:name="Log KYC Response" message="Process API: KYC business validation completed"/>
+    </sub-flow>
+
+</mule>

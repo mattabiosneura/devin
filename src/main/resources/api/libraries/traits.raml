@@ -1,0 +1,56 @@
+#%RAML 1.0 Library
+
+traits:
+  standardResponse:
+    responses:
+      200:
+        description: Success
+      400:
+        description: Bad Request
+        body:
+          application/json:
+            example:
+              message: "Bad request"
+      404:
+        description: Not Found
+        body:
+          application/json:
+            example:
+              message: "Resource not found"
+      422:
+        description: Unprocessable Entity
+        body:
+          application/json:
+            example:
+              message: "Business validation failed"
+      500:
+        description: Internal Server Error
+        body:
+          application/json:
+            example:
+              message: "Internal server error"
+
+  jsonBody:
+    body:
+      application/json:
+
+  businessHeaders:
+    headers:
+      X-Process-ID:
+        type: string
+        required: false
+        description: Process identifier for business logic tracking
+      X-Business-Unit:
+        type: string
+        required: false
+        description: Business unit identifier
+
+  businessValidation:
+    responses:
+      422:
+        description: Business Validation Failed
+        body:
+          application/json:
+            example:
+              message: "Business validation failed"
+              errors: ["Age validation failed", "Currency not supported"]

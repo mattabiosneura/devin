@@ -1,0 +1,22 @@
+#%RAML 1.0
+title: Test Process API
+version: v1
+baseUri: /test-process-api
+
+uses:
+  DataTypes: libraries/data-types.raml
+  Traits: libraries/traits.raml
+
+/kyc:
+  post:
+    displayName: Process KYC Business Logic
+    description: Process API for KYC business logic orchestration and validation
+    is: [Traits.jsonBody, Traits.standardResponse, Traits.businessHeaders, Traits.businessValidation]
+    body:
+      application/json:
+        type: DataTypes.KycRequest
+    responses:
+      200:
+        body:
+          application/json:
+            type: DataTypes.KycResponse
