@@ -1,0 +1,169 @@
+#%RAML 1.0
+title: Sample API
+version: v1
+baseUri: /sampleapi
+mediaType: application/json
+
+uses:
+  types: libraries/types.raml
+  traits: libraries/traits.raml
+
+/createUser:
+  post:
+    is: [traits.standardResponse, traits.errorHandling]
+    description: Create a new user with prospect information
+    body:
+      application/json:
+        type: types.CreateUserRequest
+        example: |
+          {
+            "Application ID": "103",
+            "Request User ID": "176",
+            "Data Origin": "KYC Onboarding DEV",
+            "Account Opening Jurisdiction": "AMEA",
+            "Business Domain": "GEN",
+            "SynchAPIFlag": "Y",
+            "Relationship Team Code": "INV",
+            "Prospect": [
+              {
+                "Applicant ID": "APP5",
+                "Primary Prospect Flag": "Y",
+                "Prospect Type": "ORG",
+                "First Name": "MAHRI",
+                "Middle Name": "Mohamed Ben",
+                "Last Name": "Ahmed",
+                "Name Suffix": "Jr",
+                "Title": "Mr",
+                "Alias": ["My laden Company"],
+                "Display Name": "My laden Company",
+                "Date Of Birth": "02/02/20",
+                "SSN/TIN": "123456",
+                "Age": 0,
+                "Gender": "M",
+                "Marital Status": "MA",
+                "Number Of Dependents": 5,
+                "Primary Citizenship": "USA",
+                "Secondary Citizenship": ["TO", "USA"],
+                "Citizenship Status": "C",
+                "Country Of Birth": "Spn",
+                "Country Of Residence": ["TO", "USA"],
+                "Customer Segment": ["CLB", "RLB"],
+                "Country Of Taxation": ["USA"],
+                "Country Of Incorporation": "TO",
+                "Source Of Wealth": ["KD", "MA"],
+                "Occupation": ["AGR"],
+                "Job Title": "CEO",
+                "Employment Type": "Official",
+                "Employment Status": "EMP",
+                "Employer Name": "Jeni Inc",
+                "Employer Industry": "Casino",
+                "Expected to Transact with High Risk Country": "Y",
+                "Is Linked to related party who is PEP": "Y",
+                "Is National of Sanctioned Country Flag": "Y",
+                "Region Company Is Licensed To Operate In": ["SEZ", "MLND"],
+                "Retirement Year": "",
+                "CIP Verified Status": "CIPV",
+                "CIP Exempt Flag": "N",
+                "CIP Verified Flag": "A",
+                "PEP Flag": ["Y"],
+                "Family PEP Flag": "Y",
+                "Existing Internal ID": "",
+                "Account Type": ["SA", "CH"],
+                "Type Of Account Opening": ["OFF", "ON"],
+                "Length Of Relationship": 50,
+                "Industry": ["INS", "OG", "APR"],
+                "Address": [
+                  {
+                    "Address Purpose Code": "B",
+                    "Building Number": "123",
+                    "Building Name": "ATLAS TOWER",
+                    "Street": "JAMAL ABDUD NASIR RD.",
+                    "Street Line 1": "JAMAL RD.",
+                    "Street Line 2": "ABDUD RD.",
+                    "Street Line 3": "NASIR RD.",
+                    "Street Line 4": "JAMAL ABDUD RD.",
+                    "Street Line 5": "ABDUD NASIR RD.",
+                    "Street Line 6": "JAMAL NASIR RD.",
+                    "Area": "North",
+                    "City": "Bangalore",
+                    "State": "Karnataka",
+                    "Region": "Karnataka",
+                    "Country": "BM",
+                    "Postal Code": "560066"
+                  }
+                ],
+                "Country": [
+                  {
+                    "Relationship Type": "C",
+                    "Country": "AE"
+                  }
+                ],
+                "Credit Rating": [
+                  {
+                    "Credit Rating": "AAA",
+                    "Credit Rating Source": "MOODY",
+                    "Credit Rating Score": 580
+                  }
+                ],
+                "Email Address": [
+                  {
+                    "Email Purpose": "P",
+                    "Email Sequence Number": 1,
+                    "Email Address": "jamal@yahoo.co.in"
+                  }
+                ],
+                "Financials": {
+                  "Stated Total Liquid Net Worth Base": "1222",
+                  "Income Currency": "USD",
+                  "Stated Total Net Worth Base": "1222.098",
+                  "Stated Total Annual Turnover": "1000000000000000000.23409876",
+                  "Stated Annual Proportion of Cash Transaction": "0.78"
+                },
+                "Phone": [
+                  {
+                    "Phone Purpose": "B",
+                    "Phone Sequence Number": 1,
+                    "Country Code Of Phone Number": "001",
+                    "Phone Number": "9878798-9877-9876",
+                    "Phone Extension": "621"
+                  }
+                ],
+                "Identification Document": [
+                  {
+                    "Document Purpose": "CID",
+                    "Document Number": "12",
+                    "Document Name": "1234",
+                    "Machine Readable Zone 1": "P<UTOERIKSSON<<ANNA<MARIA<<<<<<<<<<<<<<<<<<<",
+                    "Machine Readable Zone 2": "L898902C<3UTO6908061F9406236ZE184226B<<<<<14",
+                    "Issuing District": "Phil",
+                    "Issuing Province": "North",
+                    "Issuing City": "California",
+                    "Issuing State": "Kansas",
+                    "Issuing County": "Texas",
+                    "Issuing Country": "USA",
+                    "Issuing Date": "01/01/2020",
+                    "Expiry Date": "01/01/2099",
+                    "Issuing Authority": "Passport Office"
+                  }
+                ]
+              }
+            ]
+          }
+    responses:
+      200:
+        body:
+          application/json:
+            type: types.CreateUserResponse
+            example: |
+              {
+                "Application ID": "ApplicationID-EMEA",
+                "Request ID": 208
+              }
+      400:
+        body:
+          application/json:
+            type: types.ErrorResponse
+      500:
+        body:
+          application/json:
+            type: types.ErrorResponse

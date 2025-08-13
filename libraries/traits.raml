@@ -1,0 +1,161 @@
+#%RAML 1.0 Library
+
+traits:
+  standardResponse:
+    description: Standard response headers and behaviors
+    headers:
+      Content-Type:
+        type: string
+        default: application/json
+        description: Response content type
+      X-Request-ID:
+        type: string
+        required: false
+        description: Unique request identifier for tracking
+      X-API-Version:
+        type: string
+        default: v1
+        description: API version used for this request
+    responses:
+      200:
+        description: Request processed successfully
+        headers:
+          X-Response-Time:
+            type: string
+            description: Time taken to process the request
+            example: "150ms"
+
+  errorHandling:
+    description: Standard error handling responses
+    responses:
+      400:
+        description: Bad Request - Invalid input data
+        body:
+          application/json:
+            properties:
+              error:
+                type: string
+                example: "Invalid request format"
+              code:
+                type: string
+                example: "BAD_REQUEST"
+              details:
+                type: string
+                example: "Missing required field: Application ID"
+      401:
+        description: Unauthorized - Authentication required
+        body:
+          application/json:
+            properties:
+              error:
+                type: string
+                example: "Authentication required"
+              code:
+                type: string
+                example: "UNAUTHORIZED"
+      403:
+        description: Forbidden - Insufficient permissions
+        body:
+          application/json:
+            properties:
+              error:
+                type: string
+                example: "Insufficient permissions"
+              code:
+                type: string
+                example: "FORBIDDEN"
+      404:
+        description: Not Found - Resource not found
+        body:
+          application/json:
+            properties:
+              error:
+                type: string
+                example: "Resource not found"
+              code:
+                type: string
+                example: "NOT_FOUND"
+      422:
+        description: Unprocessable Entity - Validation errors
+        body:
+          application/json:
+            properties:
+              error:
+                type: string
+                example: "Validation failed"
+              code:
+                type: string
+                example: "VALIDATION_ERROR"
+              details:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    field:
+                      type: string
+                      example: "Email Address"
+                    message:
+                      type: string
+                      example: "Invalid email format"
+      500:
+        description: Internal Server Error
+        body:
+          application/json:
+            properties:
+              error:
+                type: string
+                example: "Internal server error"
+              code:
+                type: string
+                example: "INTERNAL_ERROR"
+              details:
+                type: string
+                example: "An unexpected error occurred while processing your request"
+
+  rateLimiting:
+    description: Rate limiting headers and responses
+    headers:
+      X-RateLimit-Limit:
+        type: integer
+        description: Maximum number of requests allowed per time window
+        example: 1000
+      X-RateLimit-Remaining:
+        type: integer
+        description: Number of requests remaining in current time window
+        example: 999
+      X-RateLimit-Reset:
+        type: integer
+        description: Unix timestamp when the rate limit resets
+        example: 1692825600
+    responses:
+      429:
+        description: Too Many Requests - Rate limit exceeded
+        body:
+          application/json:
+            properties:
+              error:
+                type: string
+                example: "Rate limit exceeded"
+              code:
+                type: string
+                example: "RATE_LIMIT_EXCEEDED"
+              retry_after:
+                type: integer
+                description: Seconds to wait before retrying
+                example: 60
+
+  auditLogging:
+    description: Audit logging and tracking capabilities
+    headers:
+      X-Correlation-ID:
+        type: string
+        required: false
+        description: Correlation ID for request tracking across services
+      X-User-Agent:
+        type: string
+        required: false
+        description: Client user agent information
+      X-Client-IP:
+        type: string
+        required: false
+        description: Client IP address for audit purposes

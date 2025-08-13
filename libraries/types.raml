@@ -1,0 +1,430 @@
+#%RAML 1.0 Library
+
+types:
+  CreateUserRequest:
+    type: object
+    properties:
+      Application ID:
+        type: string
+        required: true
+        description: Unique application identifier
+      Request User ID:
+        type: string
+        required: true
+        description: ID of the user making the request
+      Data Origin:
+        type: string
+        required: true
+        description: Source system or process origin
+      Account Opening Jurisdiction:
+        type: string
+        required: true
+        description: Jurisdiction for account opening
+      Business Domain:
+        type: string
+        required: true
+        description: Business domain classification
+      SynchAPIFlag:
+        type: string
+        required: true
+        enum: ["Y", "N"]
+        description: Synchronous API processing flag
+      Relationship Team Code:
+        type: string
+        required: true
+        description: Code for the relationship team
+      Prospect:
+        type: array
+        items: ProspectType
+        required: true
+        description: Array of prospect information
+
+  ProspectType:
+    type: object
+    properties:
+      Applicant ID:
+        type: string
+        required: true
+      Primary Prospect Flag:
+        type: string
+        enum: ["Y", "N"]
+        required: true
+      Prospect Type:
+        type: string
+        required: true
+      First Name:
+        type: string
+        required: false
+      Middle Name:
+        type: string
+        required: false
+      Last Name:
+        type: string
+        required: false
+      Name Suffix:
+        type: string
+        required: false
+      Title:
+        type: string
+        required: false
+      Alias:
+        type: array
+        items: string
+        required: false
+      Display Name:
+        type: string
+        required: false
+      Date Of Birth:
+        type: string
+        required: false
+        description: Date in MM/DD/YY format
+      SSN/TIN:
+        type: string
+        required: false
+      Age:
+        type: integer
+        required: false
+      Gender:
+        type: string
+        required: false
+      Marital Status:
+        type: string
+        required: false
+      Number Of Dependents:
+        type: integer
+        required: false
+      Primary Citizenship:
+        type: string
+        required: false
+      Secondary Citizenship:
+        type: array
+        items: string
+        required: false
+      Citizenship Status:
+        type: string
+        required: false
+      Country Of Birth:
+        type: string
+        required: false
+      Country Of Residence:
+        type: array
+        items: string
+        required: false
+      Customer Segment:
+        type: array
+        items: string
+        required: false
+      Country Of Taxation:
+        type: array
+        items: string
+        required: false
+      Country Of Incorporation:
+        type: string
+        required: false
+      Source Of Wealth:
+        type: array
+        items: string
+        required: false
+      Occupation:
+        type: array
+        items: string
+        required: false
+      Job Title:
+        type: string
+        required: false
+      Employment Type:
+        type: string
+        required: false
+      Employment Status:
+        type: string
+        required: false
+      Employer Name:
+        type: string
+        required: false
+      Employer Industry:
+        type: string
+        required: false
+      Expected to Transact with High Risk Country:
+        type: string
+        enum: ["Y", "N"]
+        required: false
+      Is Linked to related party who is PEP:
+        type: string
+        enum: ["Y", "N"]
+        required: false
+      Is National of Sanctioned Country Flag:
+        type: string
+        enum: ["Y", "N"]
+        required: false
+      Region Company Is Licensed To Operate In:
+        type: array
+        items: string
+        required: false
+      Retirement Year:
+        type: string
+        required: false
+      CIP Verified Status:
+        type: string
+        required: false
+      CIP Exempt Flag:
+        type: string
+        enum: ["Y", "N"]
+        required: false
+      CIP Verified Flag:
+        type: string
+        required: false
+      PEP Flag:
+        type: array
+        items: string
+        required: false
+      Family PEP Flag:
+        type: string
+        enum: ["Y", "N"]
+        required: false
+      Existing Internal ID:
+        type: string
+        required: false
+      Account Type:
+        type: array
+        items: string
+        required: false
+      Type Of Account Opening:
+        type: array
+        items: string
+        required: false
+      Length Of Relationship:
+        type: integer
+        required: false
+      Industry:
+        type: array
+        items: string
+        required: false
+      Address:
+        type: array
+        items: AddressType
+        required: false
+      Country:
+        type: array
+        items: CountryRelationType
+        required: false
+      Credit Rating:
+        type: array
+        items: CreditRatingType
+        required: false
+      Email Address:
+        type: array
+        items: EmailType
+        required: false
+      Financials:
+        type: FinancialsType
+        required: false
+      Phone:
+        type: array
+        items: PhoneType
+        required: false
+      Identification Document:
+        type: array
+        items: IdentificationDocumentType
+        required: false
+
+  AddressType:
+    type: object
+    properties:
+      Address Purpose Code:
+        type: string
+        required: false
+      Building Number:
+        type: string
+        required: false
+      Building Name:
+        type: string
+        required: false
+      Street:
+        type: string
+        required: false
+      Street Line 1:
+        type: string
+        required: false
+      Street Line 2:
+        type: string
+        required: false
+      Street Line 3:
+        type: string
+        required: false
+      Street Line 4:
+        type: string
+        required: false
+      Street Line 5:
+        type: string
+        required: false
+      Street Line 6:
+        type: string
+        required: false
+      Area:
+        type: string
+        required: false
+      City:
+        type: string
+        required: false
+      State:
+        type: string
+        required: false
+      Region:
+        type: string
+        required: false
+      Country:
+        type: string
+        required: false
+      Postal Code:
+        type: string
+        required: false
+
+  CountryRelationType:
+    type: object
+    properties:
+      Relationship Type:
+        type: string
+        required: false
+      Country:
+        type: string
+        required: false
+
+  CreditRatingType:
+    type: object
+    properties:
+      Credit Rating:
+        type: string
+        required: false
+      Credit Rating Source:
+        type: string
+        required: false
+      Credit Rating Score:
+        type: integer
+        required: false
+
+  EmailType:
+    type: object
+    properties:
+      Email Purpose:
+        type: string
+        required: false
+      Email Sequence Number:
+        type: integer
+        required: false
+      Email Address:
+        type: string
+        required: false
+
+  FinancialsType:
+    type: object
+    properties:
+      Stated Total Liquid Net Worth Base:
+        type: string
+        required: false
+      Income Currency:
+        type: string
+        required: false
+      Stated Total Net Worth Base:
+        type: string
+        required: false
+      Stated Total Annual Turnover:
+        type: string
+        required: false
+      Stated Annual Proportion of Cash Transaction:
+        type: string
+        required: false
+
+  PhoneType:
+    type: object
+    properties:
+      Phone Purpose:
+        type: string
+        required: false
+      Phone Sequence Number:
+        type: integer
+        required: false
+      Country Code Of Phone Number:
+        type: string
+        required: false
+      Phone Number:
+        type: string
+        required: false
+      Phone Extension:
+        type: string
+        required: false
+
+  IdentificationDocumentType:
+    type: object
+    properties:
+      Document Purpose:
+        type: string
+        required: false
+      Document Number:
+        type: string
+        required: false
+      Document Name:
+        type: string
+        required: false
+      Machine Readable Zone 1:
+        type: string
+        required: false
+      Machine Readable Zone 2:
+        type: string
+        required: false
+      Issuing District:
+        type: string
+        required: false
+      Issuing Province:
+        type: string
+        required: false
+      Issuing City:
+        type: string
+        required: false
+      Issuing State:
+        type: string
+        required: false
+      Issuing County:
+        type: string
+        required: false
+      Issuing Country:
+        type: string
+        required: false
+      Issuing Date:
+        type: string
+        required: false
+        description: Date in MM/DD/YYYY format
+      Expiry Date:
+        type: string
+        required: false
+        description: Date in MM/DD/YYYY format
+      Issuing Authority:
+        type: string
+        required: false
+
+  CreateUserResponse:
+    type: object
+    properties:
+      Application ID:
+        type: string
+        required: true
+        description: Generated application identifier
+      Request ID:
+        type: integer
+        required: true
+        description: Unique request identifier
+
+  ErrorResponse:
+    type: object
+    properties:
+      error:
+        type: string
+        required: true
+        description: Error message
+      code:
+        type: string
+        required: false
+        description: Error code
+      details:
+        type: string
+        required: false
+        description: Additional error details
