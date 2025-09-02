@@ -1,0 +1,55 @@
+<?xml version="1.0" ?>
+<mule xmlns:os="http://www.mulesoft.org/schema/mule/os" xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:validation="http://www.mulesoft.org/schema/mule/validation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:munit="http://www.mulesoft.org/schema/mule/munit" xmlns:munit-tools="http://www.mulesoft.org/schema/mule/munit-tools" xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xsi:schemaLocation="     http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd     http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd     http://www.mulesoft.org/schema/mule/munit http://www.mulesoft.org/schema/mule/munit/current/mule-munit.xsd     http://www.mulesoft.org/schema/mule/munit-tools  http://www.mulesoft.org/schema/mule/munit-tools/current/mule-munit-tools.xsd http://www.mulesoft.org/schema/mule/validation http://www.mulesoft.org/schema/mule/validation/current/mule-validation.xsd http://www.mulesoft.org/schema/mule/os http://www.mulesoft.org/schema/mule/os/current/mule-os.xsd">
+  <munit:config name="test_system_api_main_5667.xml"/>
+  <munit:test name="test_system_api_main_0" description="Test the successful execution of the KYC POST endpoint through the main API flow, ensuring the APIKit router correctly routes to the implementation flow and the KYC subflow processes the request successfully." doc:id="test-system-api-main-0">
+    <munit:behavior>
+      <!-- Mock the APIKit router to bypass its internal routing logic -->
+      <munit-tools:mock-when doc:name="Mock APIKit Router" processor="apikit:router">
+        <munit-tools:with-attributes>
+          <munit-tools:with-attribute whereValue="test-system-api-config" attributeName="config-ref"/>
+        </munit-tools:with-attributes>
+        <munit-tools:then-return>
+          <munit-tools:payload value="#[MunitTools::getResourceAsString('test_system_api_main_5667/kyc-response_1618.json')]" mediaType="application/json" encoding="UTF-8"/>
+        </munit-tools:then-return>
+      </munit-tools:mock-when>
+      <!-- Mock the system-kyc-subflow to return successful KYC response -->
+      <munit-tools:mock-when doc:name="Mock system-kyc-subflow" processor="flow-ref">
+        <munit-tools:with-attributes>
+          <munit-tools:with-attribute whereValue="system-kyc-subflow" attributeName="name"/>
+        </munit-tools:with-attributes>
+        <munit-tools:then-return>
+          <munit-tools:payload value="#[MunitTools::getResourceAsString('test_system_api_main_5667/kyc-response_1618.json')]" mediaType="application/json" encoding="UTF-8"/>
+        </munit-tools:then-return>
+      </munit-tools:mock-when>
+    </munit:behavior>
+    <munit:execution>
+      <!-- Set HTTP event with POST method to /test-system-api/kyc with KYC request data -->
+      <munit:set-event doc:name="Set HTTP Event with KYC Request">
+        <munit:payload value="#[MunitTools::getResourceAsString('test_system_api_main_5667/kyc-request_1732.json')]" mediaType="application/json" encoding="UTF-8"/>
+        <munit:attributes mediaType="application/java" encoding="UTF-8">
+<![CDATA[
+                #[
+                    {
+                        method: "POST",
+                        requestPath: "/test-system-api/kyc",
+                        listenerPath: "/test-system-api/*",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        queryParams: {},
+                        uriParams: {}
+                    }
+                ]
+                ]]>          
+        </munit:attributes>
+      </munit:set-event>
+      <!-- Execute the main flow -->
+      <flow-ref name="test-system-api-main" doc:name="Execute test-system-api-main"/>
+    </munit:execution>
+    <munit:validation>
+      <!-- Verify the final payload contains expected JSON response -->
+      <munit-tools:assert-that doc:name="Assert Response Code" expression="#[payload.'response code']" is="#[MunitTools::equalTo(200)]"/>
+      <munit-tools:assert-that doc:name="Assert Response Message" expression="#[payload.'response message']" is="#[MunitTools::equalTo('Successful kyc')]"/>
+    </munit:validation>
+  </munit:test>
+</mule>
