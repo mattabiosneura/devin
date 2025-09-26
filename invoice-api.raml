@@ -1,0 +1,346 @@
+#%RAML 1.0
+title: Invoice API
+version: v1
+baseUri: https://api.example.com/v1
+mediaType: application/json
+
+types:
+  InvoiceHeaderRequest:
+    type: object
+    properties:
+      invoiceHeaderNumber:
+        type: string
+        description: The invoice header number to retrieve
+        example: "SIH-0000000"
+        required: true
+
+  HeaderInformation:
+    type: object
+    properties:
+      School Invoice Header Name:
+        type: string
+        example: "SIH-0000000"
+      Type:
+        type: string
+        example: "School Invoice"
+      Educational Institute:
+        type: string
+        example: "STATE UNIVERSITY"
+      Term:
+        type: string
+        example: "Fall"
+      Reference Nbr:
+        type: string
+        example: "Invoice Number: 00;  Vendor Invoice Number: 000000000-000"
+      Invoice Type:
+        type: string
+        example: "Tuition/Local/TDF"
+      Year:
+        type: string
+        example: "2000"
+      Status:
+        type: string
+        example: "Funded"
+      Approved Amount:
+        type: string
+        example: "0.00"
+      Cost Basis:
+        type: string
+        example: "0.0"
+
+  ControlSection:
+    type: object
+    properties:
+      Control Records:
+        type: string | nil
+      Control Units:
+        type: string | nil
+      Control Amount:
+        type: string
+        example: "0.00"
+      Submission Date:
+        type: string
+        format: date
+        example: "2000-09-06"
+      Invoice Records:
+        type: string
+        example: "1"
+      Invoice Units:
+        type: string
+        example: "0.0"
+      Invoice Amount:
+        type: string
+        example: "0.00"
+      Error Count:
+        type: string
+        example: "0"
+      Warning Count:
+        type: string
+        example: "0"
+      Success Count:
+        type: string
+        example: "1"
+
+  Variance:
+    type: object
+    properties:
+      Record Variance:
+        type: string
+        example: "1"
+      Unit Variance:
+        type: string
+        example: "0.0"
+      Amount Variance:
+        type: string
+        example: "0.0"
+
+  InvoiceHeader:
+    type: object
+    properties:
+      HeaderInformation:
+        type: HeaderInformation
+      ControlSection:
+        type: ControlSection
+      Variance:
+        type: Variance
+
+  InvoiceDetail:
+    type: object
+    properties:
+      School Invoice Detail No:
+        type: string
+        example: "SID-00000000"
+      Student Id:
+        type: string | nil
+      SSN:
+        type: string
+        example: "000000000"
+      BirthDate:
+        type: string | nil
+      Beneficiary:
+        type: string
+        example: "FIRSTNAME M LASTNAME"
+      Invoice Detail Errors:
+        type: string | nil
+      Invoice Detail Warning:
+        type: string | nil
+      Rate Code:
+        type: string | nil
+      Requested Credits:
+        type: string
+        example: "0.0"
+      Requested Amount:
+        type: string
+        example: "0.00"
+      Status:
+        type: string
+        example: "Funded"
+      Reference Number:
+        type: string
+        example: "Invoice Number: 00;  Invoice Line Number: 0"
+      For The Benefit Of:
+        type: string
+        example: "FIRSTNAME M LASTNAME"
+      Approved Amount:
+        type: string
+        example: "0.00"
+
+  InvoiceInfo:
+    type: object
+    properties:
+      InvoiceHeader:
+        type: InvoiceHeader
+      InvoiceDetail:
+        type: InvoiceDetail[]
+
+  InvoiceResponse:
+    type: object
+    properties:
+      InvoiceInfo:
+        type: InvoiceInfo[]
+
+traits:
+  secured:
+    headers:
+      Authorization:
+        description: Bearer token for authentication
+        type: string
+        required: true
+        example: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+
+  pageable:
+    queryParameters:
+      page:
+        description: Page number for pagination
+        type: integer
+        minimum: 1
+        default: 1
+        example: 1
+      limit:
+        description: Number of items per page
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 10
+        example: 10
+
+  rateLimited:
+    headers:
+      X-RateLimit-Limit:
+        description: The number of allowed requests in the current period
+        type: integer
+        example: 1000
+      X-RateLimit-Remaining:
+        description: The number of remaining requests in the current period
+        type: integer
+        example: 999
+      X-RateLimit-Reset:
+        description: The time at which the current rate limit window resets
+        type: integer
+        example: 1609459200
+
+  errorHandling:
+    responses:
+      400:
+        description: Bad Request
+        body:
+          application/json:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Invalid request format"
+              code:
+                type: integer
+                example: 400
+      401:
+        description: Unauthorized
+        body:
+          application/json:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Authentication required"
+              code:
+                type: integer
+                example: 401
+      404:
+        description: Not Found
+        body:
+          application/json:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Invoice not found"
+              code:
+                type: integer
+                example: 404
+      500:
+        description: Internal Server Error
+        body:
+          application/json:
+            type: object
+            properties:
+              error:
+                type: string
+                example: "Internal server error"
+              code:
+                type: integer
+                example: 500
+
+/invoices:
+  get:
+    description: Retrieve invoice information by header number
+    is: [secured, pageable, rateLimited, errorHandling]
+    queryParameters:
+      invoiceHeaderNumber:
+        description: The invoice header number to retrieve
+        type: string
+        required: true
+        example: "SIH-0000000"
+    responses:
+      200:
+        description: Successfully retrieved invoice information
+        body:
+          application/json:
+            type: InvoiceResponse
+            example: |
+              {
+                "InvoiceInfo": [
+                  {
+                    "InvoiceHeader": {
+                      "HeaderInformation": {
+                        "School Invoice Header Name": "SIH-0000000",
+                        "Type": "School Invoice",
+                        "Educational Institute": "STATE UNIVERSITY",
+                        "Term": "Fall",
+                        "Reference Nbr": "Invoice Number: 00;  Vendor Invoice Number: 000000000-000",
+                        "Invoice Type": "Tuition/Local/TDF",
+                        "Year": "2000",
+                        "Status": "Funded",
+                        "Approved Amount": "0.00",
+                        "Cost Basis": "0.0"
+                      },
+                      "ControlSection": {
+                        "Control Records": null,
+                        "Control Units": null,
+                        "Control Amount": "0.00",
+                        "Submission Date": "2000-09-06",
+                        "Invoice Records": "1",
+                        "Invoice Units": "0.0",
+                        "Invoice Amount": "0.00",
+                        "Error Count": "0",
+                        "Warning Count": "0",
+                        "Success Count": "1"
+                      },
+                      "Variance": {
+                        "Record Variance": "1",
+                        "Unit Variance": "0.0",
+                        "Amount Variance": "0.0"
+                      }
+                    },
+                    "InvoiceDetail": [
+                      {
+                        "School Invoice Detail No": "SID-00000000",
+                        "Student Id": null,
+                        "SSN": "000000000",
+                        "BirthDate": null,
+                        "Beneficiary": "FIRSTNAME M LASTNAME",
+                        "Invoice Detail Errors": null,
+                        "Invoice Detail Warning": null,
+                        "Rate Code": null,
+                        "Requested Credits": "0.0",
+                        "Requested Amount": "0.00",
+                        "Status": "Funded",
+                        "Reference Number": "Invoice Number: 00;  Invoice Line Number: 0",
+                        "For The Benefit Of": "FIRSTNAME M LASTNAME",
+                        "Approved Amount": "0.00"
+                      }
+                    ]
+                  }
+                ]
+              }
+
+  post:
+    description: Create or update invoice information
+    is: [secured, rateLimited, errorHandling]
+    body:
+      application/json:
+        type: InvoiceHeaderRequest
+        example: |
+          {
+            "invoiceHeaderNumber": "SIH-0000000"
+          }
+    responses:
+      201:
+        description: Invoice created successfully
+        body:
+          application/json:
+            type: InvoiceResponse
+      200:
+        description: Invoice updated successfully
+        body:
+          application/json:
+            type: InvoiceResponse
